@@ -6,7 +6,7 @@
     <string name="tv_idcliente">Id Cliente</string>
     <string name="et_cliente">Ingresar Cliente</string>
     <string name="tv_precio">Precio</string>
-   <string name="tv_cantidad">Cantidad</string>
+    <string name="tv_cantidad">Cantidad</string>
     <string name="ev_cantidad">Ingresar Cantidad</string>
     <string name="cb_iva">Incluye IVA</string>
     <string name="cb_ice">Incluye ICE</string>
@@ -18,4 +18,16 @@
     <string name="tv_sub_iva">Subtotal IVA</string>
     <string name="tv_sub_ice">Subtotal ICE</string>
     <string name="total">Total</string>
+
+    //CLIENTES
+    <string name="tv_encabezado1">Clientes</string>
+    <string name="tv_idclientec">Id Cliente</string>
+    <string name="et_clientec">Ingresar Cliente</string>
+    <string name="tv_nombrec">Nombre</string>
+    <string name="et_nombrec">Ingresar Nombre</string>
+    <string name="tv_direccionc">Direccion</string>
+    <string name="et_direccionc">Ingresar Direccion</string>
+    <string name="btn_buscarc">Buscar</string>
+    <string name="btn_insertarc">Insertar</string>
+    <string name="btn_siguientec">Siguiente</string>
 </resources>

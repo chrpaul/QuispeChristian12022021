@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="132dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnCargar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_Cargar"
@@ -23,7 +23,7 @@
         tools:layout_editor_absoluteY="119dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnNuevo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nuevo_pedido"
@@ -47,7 +47,7 @@
         tools:layout_editor_absoluteY="61dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edproducto"
         android:layout_width="202dp"
         android:layout_height="47dp"
         android:ems="10"
@@ -57,7 +57,7 @@
         tools:layout_editor_absoluteY="55dp" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/edcliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -75,7 +75,7 @@
         tools:layout_editor_absoluteY="200dp" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edCantidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -93,7 +93,7 @@
         tools:layout_editor_absoluteY="269dp" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/chbIce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cb_ice"
@@ -101,7 +101,7 @@
         tools:layout_editor_absoluteY="301dp" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/chbIva"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cb_iva"
@@ -109,7 +109,7 @@
         tools:layout_editor_absoluteY="301dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnañadir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_añadir"
@@ -117,7 +117,7 @@
         tools:layout_editor_absoluteY="366dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnQuitar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_quitar"
@@ -141,7 +141,7 @@
         tools:layout_editor_absoluteY="595dp" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/txtIva"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -149,7 +149,7 @@
         tools:layout_editor_absoluteY="550dp" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/textIce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -165,7 +165,7 @@
         tools:layout_editor_absoluteY="639dp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
