@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,11 +39,41 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     private ListView lv_datos;
     private Pedido pedido;
+    ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        pedido = new Pedido();
+        edtproducto = (EditText) findViewById(R.id.edtProducto);
+        edtcantidad = (EditText) findViewById(R.id.edtCantidad);
+        cb_ice = (CheckBox) findViewById(R.id.chbIce);
+        cb_iva = (CheckBox) findViewById(R.id.chbIva);
+
+        lv_datos = (ListView) findViewById(R.id.lvdatos);
+
+        linea.add("Cod   Producto       Cantidad   V/U   ICE  IVA  Subtotal");
+        adapter = new ArrayAdapter<String>(this, R.layout.list_chris, linea);
+        lv_datos.setAdapter(adapter);
+        lv_datos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Detalle detalle = new Detalle();
+                try {
+                    int codigo = Integer.valueOf(linea.get(position).substring(0, 1).trim());
+                    for (int i = 0; i < pedido.getDetalles().size(); i++) {
+                        if (codigo == pedido.getDetalles().get(i).producto.id_producto) {
+                            detalle = pedido.getDetalles().get(i);
+                            break;
+                        }
+                    }
+                    EstablecerValoresCampos(detalle);
+                } catch (Exception e) {
+                    String excepcion = e.getMessage();
+                }
+            }
+        });
 
     }
 
@@ -70,10 +102,16 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    public void EstablecerValoresCampos(Detalle detalle) {
+        edtproducto.setText(String.valueOf(detalle.producto.id_producto));
+        tv_nombre.setText(detalle.producto.nombre);
+        tv_precio.setText(String.valueOf(detalle.producto.precio));
+        edtcantidad.setText(String.valueOf(detalle.cantidad));
+    }
     public void AñadirProductoLista(View view) {
 
         if (edtcantidad.getText().toString().isEmpty() || edtproducto.getText().toString().isEmpty() || tv_precio.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Ingrese todos los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese los campos", Toast.LENGTH_SHORT).show();
         } else {
             int id = Integer.parseInt(edtproducto.getText().toString());
             int cantidad = Integer.parseInt(edtcantidad.getText().toString());
@@ -154,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void LimpiarCampos() {
         edtproducto.setText("");
-        edtcliente.setText("");
         edtcantidad.setText("");
         tv_precio.setText("");
         tv_nombre.setText("");
