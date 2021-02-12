@@ -20,8 +20,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         edtcantidad = (EditText) findViewById(R.id.edtCantidad);
         cb_ice = (CheckBox) findViewById(R.id.chbIce);
         cb_iva = (CheckBox) findViewById(R.id.chbIva);
-
+        btncargar= (Button) findViewById(R.id.btnCargar);
         lv_datos = (ListView) findViewById(R.id.lvdatos);
 
         linea.add("Cod   Producto       Cantidad   V/U   ICE  IVA  Subtotal");
@@ -75,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btncargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CargarPedido("http://192.168.1.7:8080/lacigarra/cargar_pedido.php?codigo="+edtproducto.getText()+"");
+            }
+        });
     }
 
     private void ejecutarServicio(String URL){
@@ -100,6 +111,30 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue= Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+    private void CargarPedido(String URL){
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject = null;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        edtproducto.setText(jsonObject.getString("nombre"));
+                        edtcantidad.setText(jsonObject.getString("precio"));
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"ERROR CONEXIÓN", Toast.LENGTH_SHORT).show();            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
     }
 
     public void EstablecerValoresCampos(Detalle detalle) {
