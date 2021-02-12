@@ -30,4 +30,18 @@
     <string name="btn_buscarc">Buscar</string>
     <string name="btn_insertarc">Insertar</string>
     <string name="btn_siguientec">Siguiente</string>
+
+
+    //PRODUCTOS
+    <string name="tv_encabezado2">Productos</string>
+    <string name="tv_idproductop">Id Producto</string>
+    <string name="et_productop">Ingresar Id</string>
+    <string name="tv_nombrep">Nombre</string>
+    <string name="et_nombrep">Ingresar Producto</string>
+    <string name="tv_preciop">Precio</string>
+    <string name="et_preciop">Ingresar Precio</string>
+    <string name="btn_buscarp">Buscar</string>
+    <string name="btn_insertarp">Insertar</string>
+    <string name="btn_siguientep">Siguiente</string>
+
 </resources>

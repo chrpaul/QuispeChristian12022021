@@ -24,31 +24,29 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Clientes extends AppCompatActivity {
-
-    EditText edtIdcliente,edtNombre,edtDireccion;
+public class Productos extends AppCompatActivity {
+    EditText edtIdproducto,edtNombre,edtPrecio;
 
     Button btnBuscar, btnInsertar,btnSiguiente;
 
     RequestQueue requestQueue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clientes);
+        setContentView(R.layout.activity_productos);
 
-        edtIdcliente= (EditText)findViewById(R.id.edtIdCliente);
-        edtNombre= (EditText)findViewById(R.id.edtNombreCliente);
-        edtDireccion= (EditText)findViewById(R.id.edtDireccion);
+        edtIdproducto= (EditText)findViewById(R.id.edtProducto);
+        edtNombre= (EditText)findViewById(R.id.edtNombreProd);
+        edtPrecio= (EditText)findViewById(R.id.edtPrecioUnitario);
 
-        btnInsertar= (Button) findViewById(R.id.btnInsertar);
-        btnBuscar= (Button) findViewById(R.id.btnBuscar);
-        btnSiguiente=(Button) findViewById(R.id.btnSiguiente);
+        btnInsertar= (Button) findViewById(R.id.btnInsertarProducto);
+        btnBuscar= (Button) findViewById(R.id.btnBuscarProducto);
+        btnSiguiente=(Button) findViewById(R.id.btnSiguienteP);
 
         btnInsertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ejecutarServicio("http://192.168.1.7:8080/lacigarra/insertar_cliente.php");
+                ejecutarServicio("http://192.168.1.7:8080/lacigarra/insertar_productos.php");
 
             }
         });
@@ -56,7 +54,7 @@ public class Clientes extends AppCompatActivity {
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buscarCliente("http://192.168.1.7:8080/lacigarra/buscar_cliente.php?codigo="+edtIdcliente.getText()+"");
+                buscarProducto("http://192.168.1.7:8080/productoscq/buscar_producto.php?codigo="+edtIdproducto.getText()+"");
             }
         });
     }
@@ -76,10 +74,9 @@ public class Clientes extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parametros=new HashMap<String, String>();
-                parametros.put("id_cliente",edtIdcliente.getText().toString());
-                parametros.put("nombrecliente",edtNombre.getText().toString());
-                parametros.put("direccion",edtDireccion.getText().toString());
-
+                parametros.put("id_producto",edtIdproducto.getText().toString());
+                parametros.put("nombre",edtNombre.getText().toString());
+                parametros.put("precio",edtPrecio.getText().toString());
                 return parametros;
             }
         };
@@ -88,7 +85,7 @@ public class Clientes extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void buscarCliente(String URL){
+    private void buscarProducto(String URL){
         JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -96,8 +93,8 @@ public class Clientes extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        edtNombre.setText(jsonObject.getString("nombre_cliente"));
-                        edtDireccion.setText(jsonObject.getString("direccion"));
+                        edtNombre.setText(jsonObject.getString("nombre"));
+                        edtPrecio.setText(jsonObject.getString("precio"));
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -111,5 +108,11 @@ public class Clientes extends AppCompatActivity {
         );
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
+    }
+
+    private void limpiarFormulario(){
+        edtIdproducto.setText("");
+        edtNombre.setText("");
+        edtPrecio.setText("");
     }
 }
