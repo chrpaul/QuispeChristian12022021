@@ -8,7 +8,7 @@ public class Detalle {
     public double subtotal_iva;
     public double subtotal_ice;
     public double subtotal_producto;
-
+    public Producto producto;
 
     public int getId_detalle() {
         return id_detalle;
@@ -64,6 +64,13 @@ public class Detalle {
 
     public void setSubtotal_producto(double subtotal_producto) {
         this.subtotal_producto = subtotal_producto;
+    }
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public Detalle(){

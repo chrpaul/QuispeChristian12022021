@@ -9,18 +9,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_pedido, tv_nombre, tv_precio, tv_sub_ice, tv_sub_iva, tv_sub;
-    private EditText edtproducto, edtcliente,edtcantidad;
+    private EditText edtproducto, edtcantidad;
     private Button btnnuevo, btncargar, btnañadir, btnquitar;
     private CheckBox cb_ice, cb_iva;
-
+    List<String> linea = new ArrayList<>();
+    RequestQueue requestQueue;
+    private ListView lv_datos;
+    private Pedido pedido;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,66 +45,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Quitar
-    public void QuitarProducto(View view) {
-        int codigo = Integer.valueOf(et_codigo.getText().toString());
-        for (int i = 0; i < pedido.getDetalles().size(); i++) {
-            if (codigo == pedido.getDetalles().get(i).producto.id_producto) {
-                pedido.getDetalles().remove(i);
-                break;
+    private void ejecutarServicio(String URL){
+        StringRequest stringRequest= new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(),"OPERACION EXITOSA",Toast.LENGTH_SHORT).show();
             }
-        }
-
-        for (int i = 1; i < linea.size(); i++) {
-            int cod = Integer.valueOf(linea.get(i).substring(0, 1).trim());
-            if (cod == codigo) {
-                linea.remove(i);
-                LimpiarCampos();
-                adapter.notifyDataSetChanged();
-                break;
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
-        }
-        CalcularValores();
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros=new HashMap<String, String>();
+                parametros.put("id_Detalle",edtproducto.getText().toString());
+                parametros.put("cantidad",edtcantidad.getText().toString());
+                return parametros;
+            }
+        };
 
+        requestQueue= Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
-    //Cargar
-    public void CargarProducto(View view) {
-
-        try {
-            SQLiteDatabase base = admin.getReadableDatabase();
-
-            String codigo = et_codigo.getText().toString();
-
-            if (!codigo.isEmpty()) {
-                Cursor fila = base.rawQuery("SELECT nombre,precio FROM productos WHERE id_producto =" + codigo, null);
-                if (fila.moveToFirst()) {
-                    tv_nombre.setText(fila.getString(0));
-                    tv_precio.setText(fila.getString(1));
-                    base.close();
-                } else {
-                    Toast.makeText(this, "Producto no existe", Toast.LENGTH_SHORT).show();
-                    base.close();
-                }
-            } else {
-                Toast.makeText(this, "Ingrese el codigo del producto", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e) {
-            String exepcion = e.getMessage();
-        }
-
-
-    }
-
-    //Añadir
     public void AñadirProductoLista(View view) {
 
-        if (et_cantidad.getText().toString().isEmpty() || et_codigo.getText().toString().isEmpty() || tv_precio.getText().toString().isEmpty()) {
+        if (edtcantidad.getText().toString().isEmpty() || edtproducto.getText().toString().isEmpty() || tv_precio.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese todos los campos", Toast.LENGTH_SHORT).show();
         } else {
-            int id = Integer.parseInt(et_codigo.getText().toString());
-            int cantidad = Integer.parseInt(et_cantidad.getText().toString());
+            int id = Integer.parseInt(edtproducto.getText().toString());
+            int cantidad = Integer.parseInt(edtcantidad.getText().toString());
             double precio = Double.parseDouble(tv_precio.getText().toString());
             String nombre = tv_nombre.getText().toString();
 
@@ -163,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
         tv_sub.setText(formato.format(total));
 
     }
-
 
     private void LimpiarCampos() {
         edtproducto.setText("");

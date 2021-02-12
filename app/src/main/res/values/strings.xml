@@ -3,9 +3,7 @@
     <string name="tv_encabezado">Pedido</string>
     <string name="tv_idcodigo">Id producto</string>
     <string name="ev_idcodigo">Ingresar Producto</string>
-    <string name="tv_idcliente">Id Cliente</string>
-    <string name="et_cliente">Ingresar Cliente</string>
-    <string name="tv_precio">Precio</string>
+      <string name="tv_precio">Precio</string>
     <string name="tv_cantidad">Cantidad</string>
     <string name="ev_cantidad">Ingresar Cantidad</string>
     <string name="cb_iva">Incluye IVA</string>
