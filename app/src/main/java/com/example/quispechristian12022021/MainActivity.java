@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         btncargar= (Button) findViewById(R.id.btnCargar);
         btnquitar= (Button) findViewById(R.id.btnQuitar);
+        btnnuevo= (Button) findViewById(R.id.btnNuevo);
+
         lv_datos = (ListView) findViewById(R.id.lvdatos);
 
         linea.add("Cod   Producto       Cantidad   V/U   ICE  IVA  Subtotal");
@@ -79,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     String excepcion = e.getMessage();
                 }
+            }
+        });
+
+        btnnuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ejecutarServicio("http://192.168.1.7:8080/lacigarra/insertar_pedido.php");
+
             }
         });
 
