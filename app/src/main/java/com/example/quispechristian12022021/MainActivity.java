@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         edtcantidad = (EditText) findViewById(R.id.edtCantidad);
         cb_ice = (CheckBox) findViewById(R.id.chbIce);
         cb_iva = (CheckBox) findViewById(R.id.chbIva);
+
         btncargar= (Button) findViewById(R.id.btnCargar);
+        btnquitar= (Button) findViewById(R.id.btnQuitar);
         lv_datos = (ListView) findViewById(R.id.lvdatos);
 
         linea.add("Cod   Producto       Cantidad   V/U   ICE  IVA  Subtotal");
@@ -84,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CargarPedido("http://192.168.1.7:8080/lacigarra/cargar_pedido.php?codigo="+edtproducto.getText()+"");
+            }
+        });
+
+        btnquitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuitarPedido("http://192.168.1.7:8080/lacigarra/quitar_pedido.php?codigo="+edtproducto.getText()+"");
             }
         });
     }
@@ -206,6 +215,28 @@ public class MainActivity extends AppCompatActivity {
                 LimpiarCampos();
             }
         }
+
+    }
+
+    public void QuitarPedido(String URL) {
+        int codigo = Integer.valueOf(edtproducto.getText().toString());
+        for (int i = 0; i < pedido.getDetalles().size(); i++) {
+            if (codigo == pedido.getDetalles().get(i).producto.id_producto) {
+                pedido.getDetalles().remove(i);
+                break;
+            }
+        }
+
+        for (int i = 1; i < linea.size(); i++) {
+            int cod = Integer.valueOf(linea.get(i).substring(0, 1).trim());
+            if (cod == codigo) {
+                linea.remove(i);
+                LimpiarCampos();
+                adapter.notifyDataSetChanged();
+                break;
+            }
+        }
+        CalcularValores();
 
     }
 
